@@ -71,4 +71,8 @@ public class CategoriaService {
 		
 		return pageDTO;
 	}
+	
+	public Categoria fromDTO(CategoriaDTO objDTO) {
+		return new Categoria(objDTO.getId(), objDTO.getNome());
+	}
 }
