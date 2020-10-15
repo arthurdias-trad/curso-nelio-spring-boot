@@ -1,12 +1,14 @@
 package br.com.arthurdias.cursomc.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.arthurdias.cursomc.domain.Categoria;
@@ -59,5 +61,14 @@ public class CategoriaService {
 				.collect(Collectors.toList());
 		
 		return listaDTO;
+	}
+	
+	public Page<CategoriaDTO> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		System.out.println(Direction.valueOf(direction));
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Page<Categoria> pageCategorias = this.repo.findAll(pageRequest);
+		Page<CategoriaDTO> pageDTO = pageCategorias.map(obj -> new CategoriaDTO(obj));
+		
+		return pageDTO;
 	}
 }
